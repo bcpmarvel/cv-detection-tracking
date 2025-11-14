@@ -3,7 +3,7 @@ from src.detection.service import DetectionService
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Real-time object detection")
+    parser = argparse.ArgumentParser(description="Real-time object detection and tracking")
     parser.add_argument(
         "--source",
         type=str,
@@ -23,6 +23,11 @@ def main() -> None:
         choices=["mps", "cuda", "cpu"],
         help="Device for inference",
     )
+    parser.add_argument(
+        "--track",
+        action="store_true",
+        help="Enable multi-object tracking",
+    )
 
     args = parser.parse_args()
 
@@ -31,6 +36,7 @@ def main() -> None:
     service = DetectionService(
         device=args.device,
         conf_threshold=args.conf,
+        enable_tracking=args.track,
     )
 
     service.run_video(source)
