@@ -38,3 +38,20 @@ def draw_detections(frame, results, fps: float | None = None):
         )
 
     return annotated_frame
+
+
+def draw_tracks(frame, results, fps: float | None = None):
+    annotated_frame = results.plot()
+
+    if fps is not None:
+        cv2.putText(
+            annotated_frame,
+            f"FPS: {fps:.1f}",
+            (10, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (0, 255, 0),
+            2,
+        )
+
+    return annotated_frame

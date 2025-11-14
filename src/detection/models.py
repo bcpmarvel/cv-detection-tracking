@@ -32,3 +32,23 @@ class YOLODetector:
             device=self.device,
         )
         return results[0]
+
+    def track(
+        self,
+        frame,
+        conf: float = 0.5,
+        iou: float = 0.45,
+        max_det: int = 300,
+        persist: bool = True,
+    ):
+        results = self.model.track(
+            frame,
+            conf=conf,
+            iou=iou,
+            max_det=max_det,
+            verbose=False,
+            device=self.device,
+            persist=persist,
+            tracker="botsort.yaml",
+        )
+        return results[0]

@@ -3,9 +3,7 @@ from pathlib import Path
 
 from src.config import settings
 from src.detection.models import YOLODetector
-from src.detection.utils import FPSCounter, draw_detections
-from src.tracking.service import TrackingService
-from src.tracking.utils import draw_tracks
+from src.detection.utils import FPSCounter, draw_detections, draw_tracks
 
 
 class DetectionService:
@@ -25,25 +23,31 @@ class DetectionService:
 
         self.detector = YOLODetector(self.model_path, self.device)
         self.fps_counter = FPSCounter()
-        self.tracking_service = TrackingService() if self.enable_tracking else None
 
     def process_frame(self, frame):
-        results = self.detector.predict(
-            frame,
-            conf=self.conf_threshold,
-            iou=self.iou_threshold,
-            max_det=settings.max_detections,
-        )
+        if self.enable_tracking:
+            results = self.detector.track(
+                frame,
+                conf=self.conf_threshold,
+                iou=self.iou_threshold,
+                max_det=settings.max_detections,
+            )
+        else:
+            results = self.detector.predict(
+                frame,
+                conf=self.conf_threshold,
+                iou=self.iou_threshold,
+                max_det=settings.max_detections,
+            )
 
         fps = self.fps_counter.update()
 
-        if self.enable_tracking and self.tracking_service:
-            tracks = self.tracking_service.update(results)
-            annotated_frame = draw_tracks(frame, tracks, fps)
-            return annotated_frame, results, tracks
+        if self.enable_tracking:
+            annotated_frame = draw_tracks(frame, results, fps)
+        else:
+            annotated_frame = draw_detections(frame, results, fps)
 
-        annotated_frame = draw_detections(frame, results, fps)
-        return annotated_frame, results, None
+        return annotated_frame, results
 
     def run_video(self, source: str | int | None = None):
         source = source if source is not None else settings.video_source
@@ -60,7 +64,7 @@ class DetectionService:
                 if not ret:
                     break
 
-                annotated_frame, _, _ = self.process_frame(frame)
+                annotated_frame, _ = self.process_frame(frame)
 
                 cv2.imshow(window_name, annotated_frame)
 
