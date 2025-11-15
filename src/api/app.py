@@ -7,11 +7,16 @@ from src.config import settings
 from src.detection.models import YOLODetector
 from src.detection.service import DetectionService
 from src.api.routes import router
+from src.api.middleware import RequestLoggingMiddleware
+from src.logging import configure_logging, get_logger
+
+configure_logging()
+log = get_logger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Loading YOLO model...")
+    log.info("loading_model", model_path=str(settings.model_path), device=settings.device)
     detector = YOLODetector(settings.model_path, settings.device)
 
     app.state.detector = detector
@@ -21,11 +26,11 @@ async def lifespan(app: FastAPI):
     )
     app.state.device = settings.device
 
-    print(f"Model loaded on device: {settings.device}")
+    log.info("model_loaded", device=settings.device)
 
     yield
 
-    print("Shutting down...")
+    log.info("shutting_down")
 
 
 def create_app() -> FastAPI:
@@ -36,6 +41,7 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    app.add_middleware(RequestLoggingMiddleware)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.api_cors_origins,

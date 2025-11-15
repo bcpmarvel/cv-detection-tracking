@@ -10,6 +10,7 @@ dependencies = [
     "numpy>=2.3.4",
     "opencv-python>=4.11.0.86",
     "python-multipart>=0.0.20",
+    "structlog>=25.5.0",
     "supervision>=0.26.1",
     "torch>=2.9.1",
     "torchvision>=0.24.1",

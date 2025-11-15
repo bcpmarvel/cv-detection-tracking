@@ -5,7 +5,9 @@ from src.api.schemas import DetectionResponse, HealthResponse
 from src.api.dependencies import get_detection_service
 from src.api.utils import decode_image, results_to_detections
 from src.detection.service import DetectionService
+from src.logging import get_logger
 
+log = get_logger(__name__)
 router = APIRouter(prefix="/api")
 
 
@@ -24,6 +26,14 @@ async def detect(
     detections = results_to_detections(results)
 
     processing_time = (time.time() - start_time) * 1000
+
+    log.info(
+        "detection_complete",
+        processing_time_ms=round(processing_time, 2),
+        image_width=width,
+        image_height=height,
+        detection_count=len(detections),
+    )
 
     return DetectionResponse(
         detections=detections,

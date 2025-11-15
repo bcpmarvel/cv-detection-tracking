@@ -29,5 +29,8 @@ class Settings(BaseSettings):
     api_cors_origins: list[str] = ["*"]
     api_max_image_size: int = 10 * 1024 * 1024
 
+    log_level: str = "INFO"
+    log_format: str = "console"
+
 
 settings = Settings()
