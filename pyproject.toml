@@ -19,6 +19,10 @@ dependencies = [
     "websockets>=15.0.1",
 ]
 
+[project.scripts]
+detect = "src.cli:main"
+serve = "src.server:main"
+
 [dependency-groups]
 dev = [
     "pydantic-settings>=2.12.0",
