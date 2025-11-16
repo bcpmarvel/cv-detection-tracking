@@ -2,6 +2,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Annotated, Optional
 
+import torch
 import typer
 from rich.status import Status
 
@@ -25,6 +26,15 @@ class Device(str, Enum):
     CPU = "cpu"
 
 
+def get_default_device() -> Device:
+    """Auto-detect the best available device."""
+    if torch.cuda.is_available():
+        return Device.CUDA
+    elif torch.backends.mps.is_available():
+        return Device.MPS
+    return Device.CPU
+
+
 @app.command("image")
 def detect_image(
     source: Annotated[str, typer.Argument(help="Path to input image or directory")],
@@ -39,8 +49,13 @@ def detect_image(
         typer.Option("--conf", "-c", min=0.0, max=1.0, help="Confidence threshold"),
     ] = 0.5,
     device: Annotated[
-        Device, typer.Option("--device", "-d", help="Device for inference")
-    ] = Device.MPS,
+        Optional[Device],
+        typer.Option(
+            "--device",
+            "-d",
+            help="Device for inference (auto-detected if not specified)",
+        ),
+    ] = None,
     model: Annotated[
         Optional[str],
         typer.Option(
@@ -71,13 +86,14 @@ def detect_image(
             raise typer.Exit(1)
 
     model_name = model if model else settings.model_name
+    selected_device = device if device else get_default_device()
 
     try:
         if not quiet:
             with Status("Loading model...", console=console):
-                detector = YOLODetector(model_name, device.value)
+                detector = YOLODetector(model_name, selected_device.value)
         else:
-            detector = YOLODetector(model_name, device.value)
+            detector = YOLODetector(model_name, selected_device.value)
     except FileNotFoundError:
         print_error(f"Model not found: {model_name}")
         raise typer.Exit(1)
@@ -124,8 +140,13 @@ def detect_video(
         typer.Option("--conf", "-c", min=0.0, max=1.0, help="Confidence threshold"),
     ] = 0.5,
     device: Annotated[
-        Device, typer.Option("--device", "-d", help="Device for inference")
-    ] = Device.MPS,
+        Optional[Device],
+        typer.Option(
+            "--device",
+            "-d",
+            help="Device for inference (auto-detected if not specified)",
+        ),
+    ] = None,
     model: Annotated[
         Optional[str],
         typer.Option(
@@ -157,13 +178,14 @@ def detect_video(
     )
 
     model_name = model if model else settings.model_name
+    selected_device = device if device else get_default_device()
 
     try:
         if not quiet:
             with Status("Loading model...", console=console):
-                detector = YOLODetector(model_name, device.value)
+                detector = YOLODetector(model_name, selected_device.value)
         else:
-            detector = YOLODetector(model_name, device.value)
+            detector = YOLODetector(model_name, selected_device.value)
     except FileNotFoundError:
         print_error(f"Model not found: {model_name}")
         raise typer.Exit(1)

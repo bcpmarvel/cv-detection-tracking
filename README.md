@@ -153,7 +153,6 @@ uv run detect video --source video.mp4 --track
 # Advanced options
 uv run detect video --source 0 \
   --model yolo11s.pt \
-  --device mps \
   --conf 0.6 \
   --track \
   --analytics \
