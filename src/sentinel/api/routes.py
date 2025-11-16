@@ -1,5 +1,5 @@
 import time
-from fastapi import APIRouter, UploadFile, File, Depends, Request
+from fastapi import APIRouter, UploadFile, File, Depends, Request, HTTPException
 from starlette.concurrency import run_in_threadpool
 
 from sentinel.api.schemas import DetectionResponse, HealthResponse
