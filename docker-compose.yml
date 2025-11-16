@@ -1,0 +1,57 @@
+services:
+  api:
+    build:
+      context: .
+      target: dev
+    image: sentinel:dev
+    container_name: sentinel-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount source for hot reload
+      - ./src:/app/src
+      # Mount models directory
+      - ./models:/app/models
+      # Mount config files
+      - ./.env:/app/.env:ro
+    environment:
+      - MODEL_PATH=/app/models/yolov8n.pt
+      - DEVICE=cpu
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Production service (use this for deployment)
+  api-prod:
+    build:
+      context: .
+      target: base
+    image: sentinel:latest
+    container_name: sentinel-api-prod
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models:ro
+      - ./.env:/app/.env:ro
+    environment:
+      - MODEL_PATH=/app/models/yolov8n.pt
+      - DEVICE=cpu
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - LOG_LEVEL=INFO
+    restart: always
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - production
