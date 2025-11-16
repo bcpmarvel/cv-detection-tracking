@@ -271,6 +271,6 @@ convert image.tiff image.jpg
 ## Next Steps
 
 - Explore the [main README](../README.md) for full documentation
-- Try different YOLO models (yolov8s, yolov8m, yolov8l)
+- Try different YOLO models (yolo11s, yolo11m, yolo11l, yolo11x)
 - Create custom zone configurations for analytics
 - Integrate with your own video sources

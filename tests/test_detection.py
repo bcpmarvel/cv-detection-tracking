@@ -10,7 +10,7 @@ from sentinel.detection.models import YOLODetector
 def mock_detector():
     detector = Mock(spec=YOLODetector)
     detector.device = "cpu"
-    detector.model_path = "models/yolov8n.pt"
+    detector.model_name = "yolo11m.pt"
     return detector
 
 

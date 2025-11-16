@@ -229,3 +229,8 @@ zones_*.json
 *.onnx
 yolo*.pt
 yolo*.onnx
+
+# Datasets
+MOT17/
+MOT20/
+datasets/

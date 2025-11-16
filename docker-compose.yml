@@ -12,7 +12,7 @@ services:
       - ./models:/app/models
       - ./.env:/app/.env:ro
     environment:
-      - MODEL_PATH=/app/models/yolov8n.pt
+      - MODEL_NAME=yolo11m.pt
       - DEVICE=cpu
       - API_HOST=0.0.0.0
       - API_PORT=8000
@@ -37,7 +37,7 @@ services:
       - ./models:/app/models:ro
       - ./.env:/app/.env:ro
     environment:
-      - MODEL_PATH=/app/models/yolov8n.pt
+      - MODEL_NAME=yolo11m.pt
       - DEVICE=cpu
       - API_HOST=0.0.0.0
       - API_PORT=8000

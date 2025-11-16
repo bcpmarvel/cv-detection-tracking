@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-**YOLOv8** × **BoT-SORT** × **FastAPI**
+**YOLO11** × **BoT-SORT** × **FastAPI**
 
 [Features](#-features) • [Quick Start](#-quick-start) • [Demo](#-demo) • [API](#-api) • [Documentation](#-documentation)
 
@@ -39,7 +39,7 @@ Coming soon: Live detection demo, tracking visualization, zone analytics dashboa
 
 | Feature | Description | Status |
 |---------|-------------|--------|
-| 🎯 **YOLOv8 Detection** | State-of-the-art object detection at 30+ FPS | ✅ |
+| 🎯 **YOLO11 Detection** | State-of-the-art object detection at 30+ FPS | ✅ |
 | 🔄 **BoT-SORT Tracking** | Multi-object tracking with trajectory prediction | ✅ |
 | 📊 **Zone Analytics** | Count objects, measure dwell time, detect entries/exits | ✅ |
 | 🚀 **REST API** | Production-ready FastAPI server | ✅ |
@@ -64,12 +64,9 @@ cd sentinel
 uv sync
 ```
 
-### Download Model
+### Model Setup
 
-```bash
-mkdir -p models
-wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8n.pt -O models/yolov8n.pt
-```
+YOLO11 models are automatically downloaded on first use. No manual download required.
 
 ### Run Detection
 
@@ -124,7 +121,7 @@ detect --source rtsp://camera.ip     # RTSP stream
 ### Advanced Options
 ```bash
 detect --source 0 \
-  --model models/yolov8s.pt \
+  --model yolo11s.pt \
   --device mps \
   --conf 0.6 \
   --track \
@@ -165,7 +162,7 @@ curl -X POST http://localhost:8000/api/detect \
   "image_width": 1280,
   "image_height": 720,
   "processing_time_ms": 45.2,
-  "model_name": "yolov8n.pt",
+  "model_name": "yolo11m.pt",
   "device": "mps"
 }
 ```
@@ -208,7 +205,7 @@ cp .env.example .env
 ```
 
 ```env
-MODEL_PATH=models/yolov8n.pt
+MODEL_NAME=yolo11m.pt
 DEVICE=cpu
 API_HOST=0.0.0.0
 API_PORT=8000
@@ -232,7 +229,7 @@ detect --config sentinel.toml --source 0
 
 ```
 ┌─────────────┐      ┌──────────────┐      ┌─────────────┐
-│   Input     │─────▶│   YOLOv8     │─────▶│  BoT-SORT   │
+│   Input     │─────▶│   YOLO11     │─────▶│  BoT-SORT   │
 │ (Video/API) │      │  Detection   │      │  Tracking   │
 └─────────────┘      └──────────────┘      └─────────────┘
                                                    │
@@ -257,7 +254,7 @@ src/sentinel/
 │   ├── service.py
 │   ├── models.py
 │   └── dwell.py
-├── detection/        # YOLOv8 detector, service
+├── detection/        # YOLO11 detector, service
 │   ├── service.py
 │   └── models.py
 ├── visualization/    # Annotators for drawing
@@ -276,7 +273,7 @@ src/sentinel/
 
 | Component | Technology |
 |-----------|-----------|
-| **Detection** | [YOLOv8](https://github.com/ultralytics/ultralytics) (Ultralytics) |
+| **Detection** | [YOLO11](https://github.com/ultralytics/ultralytics) (Ultralytics) |
 | **Tracking** | [BoT-SORT](https://github.com/NirAharon/BoT-SORT) |
 | **Deep Learning** | [PyTorch](https://pytorch.org) (MPS/CUDA) |
 | **API Framework** | [FastAPI](https://fastapi.tiangolo.com) |
@@ -325,7 +322,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- [Ultralytics](https://github.com/ultralytics/ultralytics) for YOLOv8
+- [Ultralytics](https://github.com/ultralytics/ultralytics) for YOLO11
 - [BoT-SORT](https://github.com/NirAharon/BoT-SORT) for multi-object tracking
 - [Roboflow](https://roboflow.com) for Supervision library
 

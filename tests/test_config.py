@@ -1,10 +1,9 @@
-from pathlib import Path
 from sentinel.config import Settings
 
 
 def test_settings_defaults():
     settings = Settings()
-    assert settings.model_path == Path("models/yolov8n.pt")
+    assert settings.model_name == "yolo11m.pt"
     assert settings.conf_threshold == 0.5
     assert settings.iou_threshold == 0.45
     assert settings.max_detections == 300
