@@ -1,6 +1,7 @@
-# Sentinel Configuration File Example
-# Copy this file to sentinel.toml and customize as needed
-# Usage: detect run --config sentinel.toml
+# CLI Configuration File
+# For local development and advanced features (tracking, analytics, video processing)
+# Docker users should use .env instead
+# Copy to sentinel.toml and customize: detect --config sentinel.toml
 
 # Model Configuration
 model_path = "models/yolov8n.pt"

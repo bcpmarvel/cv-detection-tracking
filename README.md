@@ -79,24 +79,27 @@ curl http://localhost:8000/api/health
 
 ## Configuration
 
-Create `.env` or use `--config`:
-
+**Docker/API deployment** - Use `.env`:
 ```bash
-# Model
-MODEL_PATH=models/yolov8n.pt
-DEVICE=mps  # mps, cuda, cpu
-CONF_THRESHOLD=0.5
-IOU_THRESHOLD=0.45
-
-# API
-API_HOST=0.0.0.0
-API_PORT=8000
-API_CORS_ORIGINS=["http://localhost:3000"]
-
-# Logging
-LOG_FORMAT=json  # json, console
-LOG_LEVEL=INFO
+cp .env.example .env
+# Edit .env with your settings
 ```
+
+**CLI usage** - Use `sentinel.toml`:
+```bash
+cp sentinel.example.toml sentinel.toml
+detect --config sentinel.toml --source 0
+```
+
+**Environment variables** (`.env`):
+- API server configuration
+- Model and inference settings
+- Docker deployments
+
+**TOML config** (`sentinel.toml`):
+- All features including tracking and analytics
+- Video processing parameters
+- Zone-based analytics configuration
 
 ## Project Structure
 
