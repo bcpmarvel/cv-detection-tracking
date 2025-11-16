@@ -16,10 +16,8 @@ log = get_logger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    log.info(
-        "loading_model", model_path=str(settings.model_path), device=settings.device
-    )
-    detector = YOLODetector(settings.model_path, settings.device)
+    log.info("loading_model", model_name=settings.model_name, device=settings.device)
+    detector = YOLODetector(settings.model_name, settings.device)
 
     app.state.detector = detector
     app.state.detection_service = DetectionService(

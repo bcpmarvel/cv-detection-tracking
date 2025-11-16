@@ -1,12 +1,11 @@
 import torch
 from ultralytics import YOLO
-from pathlib import Path
 
 
 class YOLODetector:
-    def __init__(self, model_path: Path, device: str = "mps"):
+    def __init__(self, model: str = "yolo11m.pt", device: str = "mps"):
         self.device = device
-        self.model = YOLO(str(model_path))
+        self.model = YOLO(model)
 
         if device == "mps" and torch.backends.mps.is_available():
             self.model.to("mps")

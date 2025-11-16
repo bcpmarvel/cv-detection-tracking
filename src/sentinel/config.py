@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
-    model_path: Path = Path("models/yolov8n.pt")
+    model_name: str = "yolo11m.pt"
     device: str = "mps"
     conf_threshold: float = 0.5
     iou_threshold: float = 0.45

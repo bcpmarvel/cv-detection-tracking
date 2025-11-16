@@ -4,7 +4,7 @@
 # Copy to sentinel.toml and customize: detect --config sentinel.toml
 
 # Model Configuration
-model_path = "models/yolov8n.pt"
+model_name = "yolo11m.pt"  # Options: yolo11n.pt, yolo11s.pt, yolo11m.pt, yolo11l.pt, yolo11x.pt
 device = "mps"  # Options: mps, cuda, cpu
 conf_threshold = 0.5
 iou_threshold = 0.45
