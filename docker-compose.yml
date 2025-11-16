@@ -8,11 +8,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # Mount source for hot reload
       - ./src:/app/src
-      # Mount models directory
       - ./models:/app/models
-      # Mount config files
       - ./.env:/app/.env:ro
     environment:
       - MODEL_PATH=/app/models/yolov8n.pt
@@ -28,7 +25,6 @@ services:
       retries: 3
       start_period: 10s
 
-  # Production service (use this for deployment)
   api-prod:
     build:
       context: .
