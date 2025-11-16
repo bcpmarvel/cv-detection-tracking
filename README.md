@@ -315,12 +315,6 @@ uv run pytest
 uv run pytest -v --cov=sentinel
 ```
 
-### CI/CD
-
-GitHub Actions workflows run on every push:
-- ✅ Ruff linting and formatting
-- ✅ Pytest test suite
-
 ---
 
 ## 📝 License
